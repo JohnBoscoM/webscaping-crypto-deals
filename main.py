@@ -1,16 +1,17 @@
-# This is a sample Python script.
+import pandas as pd
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
-# Press Skift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+driver = webdriver.Chrome(r"C:\Users\jbmat\Downloads\chromedriver_win32\chromedriver.exe")
+driver.get("https://coinmarketcap.com/sv/currencies/solana/")
+results = []
+content = driver.page_source
+soup = BeautifulSoup(content)
 
+for element in soup.findAll(div="priceValue "):
+    name = element.find("span")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    if name not in results:
+        results.append(name.text)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(results)
